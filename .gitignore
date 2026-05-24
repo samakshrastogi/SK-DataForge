@@ -1,0 +1,30 @@
+node_modules/
+dist/
+build/
+.DS_Store
+Thumbs.db
+
+# Env files
+frontend/.env
+frontend/.env.local
+backend/.env
+backend/.env.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Coverage
+coverage/
+
+# Vite
+frontend/.vite/
+
+# TypeScript
+*.tsbuildinfo
+
+# Uploaded files
+backend/uploads/
