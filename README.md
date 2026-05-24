@@ -178,69 +178,44 @@ Workspace settings are persisted in MongoDB and include quota size, warning thre
 `-- README.md
 ```
 
-## Environment Variables
+## Project Flowchart
 
-### Backend
+```mermaid
+flowchart LR
+    U["User"] --> F["Frontend (React + Vite)"]
+    F --> R["API Routes (/api)"]
+    R --> C1["Dashboard Controller"]
+    R --> C2["Upload Controller"]
+    R --> C3["File Manager Controller"]
+    R --> C4["Search Controller Logic"]
+    R --> C5["Automation Controller"]
+    R --> C6["Workspace + Notification Controllers"]
 
-Create a `backend/.env` file with:
+    C1 --> DB["MongoDB"]
+    C2 --> DB
+    C2 --> FS["Local File Storage"]
+    C2 --> INT["File Intelligence / Table Insights"]
+    C3 --> DB
+    C3 --> FS
+    C4 --> DB
+    C4 --> FS
+    C4 --> INT
+    C5 --> DB
+    C5 --> FS
+    C5 --> SCH["In-process Scheduler"]
+    C6 --> DB
 
-```env
-PORT=5000
-APP_URL=http://localhost:5000
-MONGODB_URI=mongodb://127.0.0.1:27017
-MONGODB_DB_NAME=sk-dataforge
-CORS_ORIGIN=http://localhost:5173
-UPLOAD_ROOT=uploads
+    SCH --> IMP["Import Jobs"]
+    SCH --> RET["Retention Rules"]
+    IMP --> FS
+    IMP --> DB
+    RET --> FS
+    RET --> DB
+
+    DB --> N["Workspace State, Metadata, Notifications, Rules"]
+    FS --> P["Stored Files and Archived Content"]
+    INT --> V["Preview Generation and Dataset Profiling"]
 ```
-
-Notes:
-
-- `CORS_ORIGIN` supports a comma-separated list.
-- `UPLOAD_ROOT` is relative to the backend process working directory unless you provide a different path.
-- `APP_URL` is used when the backend generates file content URLs.
-
-### Frontend
-
-Create a `frontend/.env` file with:
-
-```env
-VITE_API_URL=http://localhost:5000/api
-VITE_APP_NAME=SK DataForge
-```
-
-## Getting Started
-
-### 1. Install dependencies
-
-From the repository root:
-
-```bash
-npm install
-npm install --prefix backend
-npm install --prefix frontend
-```
-
-### 2. Start MongoDB
-
-Make sure a MongoDB instance is running and reachable through `MONGODB_URI`.
-
-### 3. Run the apps
-
-In separate terminals:
-
-```bash
-npm run dev:backend
-```
-
-```bash
-npm run dev:frontend
-```
-
-Default local URLs:
-
-- Frontend: `http://localhost:5173`
-- Backend: `http://localhost:5000`
-- API root: `http://localhost:5000/api`
 
 ## Available Scripts
 
