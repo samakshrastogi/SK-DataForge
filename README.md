@@ -178,7 +178,112 @@ Workspace settings are persisted in MongoDB and include quota size, warning thre
 `-- README.md
 ```
 
-## Project Flowchart
+## Project Flowcharts
+
+### Product Flows
+
+### User Journey Flow
+
+```mermaid
+flowchart LR
+    A["User opens workspace"] --> B["View dashboard"]
+    B --> C["Upload files"]
+    C --> D["Organize files and folders"]
+    D --> E["Preview file content"]
+    E --> F["Inspect table insights"]
+    F --> G["Search metadata or content"]
+    G --> H["Run or configure automations"]
+    H --> I["Review notifications and quota usage"]
+```
+
+### Dashboard and Workspace Flow
+
+```mermaid
+flowchart LR
+    A["Open dashboard"] --> B["Request workspace summary"]
+    B --> C["Folder and file counts"]
+    B --> D["Storage usage and quota status"]
+    B --> E["Recent files and uploads"]
+    B --> F["Analytics and trends"]
+    C --> G["Workspace overview"]
+    D --> G
+    E --> G
+    F --> G
+```
+
+### Upload Processing Flow
+
+```mermaid
+flowchart TD
+    A["User selects files"] --> B["POST /api/uploads"]
+    B --> C["Validate supported file types"]
+    C --> D["Sanitize folder and file names"]
+    D --> E["Check workspace quota"]
+    E --> F["Create or locate folder record"]
+    F --> G["Write file to local storage"]
+    G --> H["Compute SHA-256 content hash"]
+    H --> I["Create or update UploadedFile metadata"]
+    I --> J["Detect duplicates or replacement versions"]
+    J --> K["Create notifications"]
+    K --> L["Return upload response to UI"]
+```
+
+### File Preview and Intelligence Flow
+
+```mermaid
+flowchart TD
+    A["User opens file preview"] --> B["GET /api/uploads/files/:fileId/preview"]
+    B --> C["Load file metadata"]
+    C --> D["Resolve absolute file path"]
+    D --> E["Detect category and extension"]
+    E --> F{"Preview type?"}
+    F -->|Table| G["Parse worksheet rows and columns"]
+    F -->|Text / Code| H["Read text content"]
+    F -->|Image / PDF / Media| I["Build media preview payload"]
+    F -->|Archive / Unsupported| J["Build fallback preview message"]
+    G --> K["Generate dataset insights"]
+    H --> L["Build text preview"]
+    I --> M["Return content URL"]
+    J --> N["Return fallback response"]
+    K --> O["Return preview JSON to frontend"]
+    L --> O
+    M --> O
+    N --> O
+```
+
+### Search Flow
+
+```mermaid
+flowchart TD
+    A["User enters search query"] --> B["GET /api/search"]
+    B --> C["Load folders and files from MongoDB"]
+    C --> D["Match folder names and file metadata"]
+    D --> E{"Include content search?"}
+    E -->|Yes| F["Extract searchable content from table and text files"]
+    E -->|No| G["Skip content extraction"]
+    F --> H["Build content snippets"]
+    G --> I["Assemble metadata matches"]
+    H --> J["Combine folder and file results"]
+    I --> J
+    J --> K["Return grouped search response"]
+```
+
+### Automation Outcome Flow
+
+```mermaid
+flowchart LR
+    A["User creates import source or retention rule"] --> B["Automation saved in workspace"]
+    B --> C["Scheduler checks due work"]
+    C --> D["Import new files"]
+    C --> E["Archive or delete old files"]
+    D --> F["Metadata and storage updated"]
+    E --> F
+    F --> G["Notifications and refreshed workspace state"]
+```
+
+### Engineering Flows
+
+### Architecture Overview
 
 ```mermaid
 flowchart LR
@@ -215,6 +320,79 @@ flowchart LR
     DB --> N["Workspace State, Metadata, Notifications, Rules"]
     FS --> P["Stored Files and Archived Content"]
     INT --> V["Preview Generation and Dataset Profiling"]
+```
+
+### Detailed Scheduler and Automation Flow
+
+```mermaid
+flowchart TD
+    A["Server starts"] --> B["Start in-process scheduler"]
+    B --> C["Scheduler tick"]
+    C --> D["Load active import sources"]
+    C --> E["Load active retention rules"]
+    D --> F{"Source due?"}
+    F -->|Yes| G["Run import job"]
+    F -->|No| H["Wait for next tick"]
+    G --> I["Fetch URL or scan local folder"]
+    I --> J["Save imported files"]
+    J --> K["Update import source status"]
+    K --> L["Create completion or failure notification"]
+    E --> M{"Rule due?"}
+    M -->|Yes| N["Run retention rule"]
+    M -->|No| H
+    N --> O["Find matching active files"]
+    O --> P{"Action"}
+    P -->|Archive| Q["Move file to _archive path"]
+    P -->|Delete| R["Delete file and metadata"]
+    Q --> S["Update rule status"]
+    R --> S
+    S --> T["Next scheduler cycle"]
+    L --> T
+```
+
+### Data Model Relationship Diagram
+
+```mermaid
+flowchart LR
+    WS["WorkspaceSettings"] --> N["Notification"]
+    WS --> IR["ImportSource"]
+    WS --> RR["RetentionRule"]
+    F["Folder"] --> SF["Child Folder"]
+    F --> UF["UploadedFile"]
+    IR --> F
+    RR --> F
+    RR --> UF
+    UF --> N
+    IR --> N
+```
+
+### Storage Lifecycle Flow
+
+```mermaid
+flowchart LR
+    A["File uploaded"] --> B["Stored as active file"]
+    B --> C["Metadata indexed in MongoDB"]
+    C --> D["May be flagged as duplicate"]
+    D --> E["Available for search and preview"]
+    E --> F{"Retention rule triggered?"}
+    F -->|Archive| G["Moved to _archive path"]
+    F -->|Delete| H["Removed from storage and metadata"]
+    F -->|No| I["Remains active"]
+```
+
+### API Module Flow
+
+```mermaid
+flowchart LR
+    A["Routes"] --> B["Controllers"]
+    B --> C["Services"]
+    B --> D["Utilities"]
+    B --> E["Models"]
+    C --> E
+    D --> E
+    E --> F["MongoDB"]
+    D --> G["Filesystem"]
+    D --> H["Table parsing and file intelligence"]
 ```
 
 ## Available Scripts
