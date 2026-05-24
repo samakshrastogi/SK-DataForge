@@ -395,68 +395,6 @@ flowchart LR
     D --> H["Table parsing and file intelligence"]
 ```
 
-## Available Scripts
-
-### Root
-
-```bash
-npm run dev:frontend
-npm run dev:backend
-npm run build:frontend
-npm run build:backend
-```
-
-### Backend
-
-```bash
-npm run dev --prefix backend
-npm run build --prefix backend
-npm run start --prefix backend
-```
-
-### Frontend
-
-```bash
-npm run dev --prefix frontend
-npm run build --prefix frontend
-npm run preview --prefix frontend
-```
-
-## API Overview
-
-Main API groups exposed under `/api`:
-
-- `GET /dashboard`
-- `GET /health`
-- `GET /notifications`
-- `POST /notifications/read-all`
-- `GET /workspace`
-- `PATCH /workspace`
-- `GET /automation`
-- `POST /automation/sources`
-- `POST /automation/sources/:sourceId/run`
-- `POST /automation/rules`
-- `POST /automation/rules/:ruleId/run`
-- `GET /uploads/folders`
-- `POST /uploads`
-- `GET /uploads/files/:fileId/content`
-- `GET /uploads/files/:fileId/export`
-- `GET /uploads/files/:fileId/preview`
-- `GET /search`
-- `GET /manager`
-- `GET /manager/duplicates`
-- `GET /manager/folders/:folderId`
-- `POST /manager/folders`
-- `PATCH /manager/folders/:folderId/rename`
-- `DELETE /manager/folders/:folderId`
-- `POST /manager/folders/:folderId/move`
-- `POST /manager/folders/:folderId/copy`
-- `PATCH /manager/files/:fileId/rename`
-- `DELETE /manager/files/:fileId`
-- `POST /manager/files/:fileId/move`
-- `POST /manager/files/:fileId/copy`
-- bulk manager endpoints for move, delete, tag, download, and export
-
 ## Data Model Summary
 
 Key MongoDB models in the current implementation:
