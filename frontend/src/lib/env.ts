@@ -1,7 +1,8 @@
 const envKeys = {
   apiUrl: "VITE_API_URL",
   appName: "VITE_APP_NAME",
-  appUrl: "VITE_APP_URL"
+  appUrl: "VITE_APP_URL",
+  googleClientId: "VITE_GOOGLE_CLIENT_ID"
 } as const;
 
 const requiredClientEnvVars = [envKeys.apiUrl, envKeys.appName, envKeys.appUrl] as const;
@@ -19,5 +20,6 @@ const normalizeUrl = (value: string) => value.replace(/\/+$/, "");
 export const clientEnv = {
   apiUrl: normalizeUrl(getRequiredClientEnv(envKeys.apiUrl)),
   appName: getRequiredClientEnv(envKeys.appName),
-  appUrl: normalizeUrl(getRequiredClientEnv(envKeys.appUrl))
+  appUrl: normalizeUrl(getRequiredClientEnv(envKeys.appUrl)),
+  googleClientId: import.meta.env[envKeys.googleClientId] || ""
 };

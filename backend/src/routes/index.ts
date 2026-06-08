@@ -1,7 +1,16 @@
 import { Router } from "express";
 import multer from "multer";
 import { getAuditLogs } from "../controllers/auditController";
-import { createUser, getCurrentUser, listUsers, login } from "../controllers/authController";
+import {
+  createUser,
+  getCurrentUser,
+  googleSignIn,
+  listUsers,
+  login,
+  register,
+  requestPasswordReset,
+  resetPassword
+} from "../controllers/authController";
 import {
   createImportSource,
   createRetentionRule,
@@ -54,6 +63,10 @@ const upload = multer({ storage: multer.memoryStorage() });
 
 router.get("/health", getHealth);
 router.post("/auth/login", login);
+router.post("/auth/register", register);
+router.post("/auth/forgot-password", requestPasswordReset);
+router.post("/auth/reset-password", resetPassword);
+router.post("/auth/google", googleSignIn);
 
 router.use(requireAuth);
 router.use(auditMutations);

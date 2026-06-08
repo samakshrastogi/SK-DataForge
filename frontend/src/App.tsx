@@ -4,6 +4,7 @@ import { useAuth } from "./context/AuthContext";
 import FilePreviewPage from "./pages/FilePreviewPage";
 import FileManagerPage from "./pages/FileManagerPage";
 import HomePage from "./pages/HomePage";
+import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SearchPage from "./pages/SearchPage";
 import UploadPage from "./pages/UploadPage";
@@ -20,8 +21,14 @@ export default function App() {
     );
   }
 
-  if (!user && location.pathname !== "/login") {
-    return <Navigate to="/login" replace state={{ from: location }} />;
+  if (!user) {
+    return (
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="*" element={<Navigate to="/login" replace state={{ from: location }} />} />
+      </Routes>
+    );
   }
 
   return (
@@ -33,6 +40,7 @@ export default function App() {
           <AppShell>
             <Routes>
               <Route path="/" element={<HomePage />} />
+              <Route path="/dashboard" element={<HomePage />} />
               <Route path="/upload" element={<UploadPage />} />
               <Route path="/manager" element={<FileManagerPage />} />
               <Route path="/manager/folders/:folderId" element={<FileManagerPage />} />

@@ -14,7 +14,8 @@ const envKeys = {
   uploadRoot: "UPLOAD_ROOT",
   authTokenSecret: "AUTH_TOKEN_SECRET",
   adminEmail: "ADMIN_EMAIL",
-  adminPassword: "ADMIN_PASSWORD"
+  adminPassword: "ADMIN_PASSWORD",
+  googleClientId: "GOOGLE_CLIENT_ID"
 } as const;
 
 const requiredEnvVars = [
@@ -60,7 +61,8 @@ export const env = {
       ? ""
       : "dev-only-change-this-sk-dataforge-secret"),
   adminEmail: process.env[envKeys.adminEmail] || "",
-  adminPassword: process.env[envKeys.adminPassword] || ""
+  adminPassword: process.env[envKeys.adminPassword] || "",
+  googleClientId: process.env[envKeys.googleClientId] || ""
 };
 
 if (!env.authTokenSecret) {
