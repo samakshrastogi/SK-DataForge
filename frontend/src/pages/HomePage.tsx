@@ -104,11 +104,11 @@ function StatCard({
 }) {
   return (
     <article
-      className={`relative min-w-[220px] flex-1 overflow-hidden rounded-[24px] border border-white/75 px-4 py-4 shadow-[0_18px_38px_rgba(15,23,42,0.08)] backdrop-blur ${accentClass}`}
+      className={`relative min-w-[180px] flex-1 overflow-hidden rounded-2xl border border-white/75 px-3 py-3 shadow-[0_12px_28px_rgba(15,23,42,0.07)] backdrop-blur ${accentClass}`}
     >
       <div className="absolute inset-x-0 top-0 h-1 rounded-full bg-white/80" />
       <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-800">{label}</p>
-      <p className="mt-2 text-2xl font-semibold text-slate-950">{value}</p>
+      <p className="mt-1 text-xl font-semibold text-slate-950">{value}</p>
     </article>
   );
 }
@@ -300,35 +300,24 @@ export default function HomePage() {
   }, [dashboard]);
 
   return (
-    <div className="grid gap-4">
-      <section className="overflow-hidden rounded-[32px] border border-white/75 bg-[linear-gradient(135deg,rgba(239,246,255,0.96),rgba(255,255,255,0.9),rgba(253,242,248,0.92))] p-5 shadow-[0_24px_70px_rgba(31,41,55,0.10)] backdrop-blur sm:p-6">
-        <div className="flex flex-col gap-6 xl:flex-row xl:items-start xl:justify-between">
-          <div className="min-w-0 max-w-3xl xl:pr-6">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-sky-500">Home</p>
-            <h1 className="mt-3 text-3xl font-semibold leading-tight text-slate-900 sm:text-4xl">
-              Start from one place, then upload, manage, or preview files directly.
-            </h1>
-            <p className="mt-3 text-sm leading-7 text-slate-600">
-              Keep the home page focused on the next action and the latest workspace activity.
-            </p>
-          </div>
-
-          <div className="rounded-[24px] border border-white/80 bg-[linear-gradient(145deg,rgba(255,255,255,0.78),rgba(248,250,252,0.86),rgba(245,243,255,0.82))] p-3 shadow-[0_18px_48px_rgba(99,102,241,0.10)] xl:ml-6 xl:shrink-0">
-            <div className="flex flex-wrap gap-2 xl:flex-nowrap">
-              {quickLinks.map((item, index) => (
-                <Link
-                  key={item.title}
-                  to={item.href}
-                  className={
-                    index === 0
-                      ? "inline-flex min-h-[40px] items-center justify-center rounded-xl bg-[linear-gradient(90deg,#0ea5e9,#7c3aed,#ec4899)] px-4 py-2 text-center text-sm font-semibold text-white shadow-[0_14px_34px_rgba(139,92,246,0.28)] transition hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(236,72,153,0.24)]"
-                      : "inline-flex min-h-[40px] items-center justify-center rounded-xl border border-sky-100/80 bg-white/92 px-4 py-2 text-center text-sm font-semibold text-slate-800 shadow-sm transition hover:-translate-y-0.5 hover:border-violet-200 hover:bg-white"
-                  }
-                >
-                  {item.title}
-                </Link>
-              ))}
-            </div>
+    <div className="grid gap-3">
+      <section className="rounded-2xl border border-white/75 bg-white/88 p-3 shadow-[0_14px_36px_rgba(31,41,55,0.08)] backdrop-blur">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h1 className="text-base font-semibold text-slate-900">Dashboard</h1>
+          <div className="flex flex-wrap gap-2">
+            {quickLinks.map((item, index) => (
+              <Link
+                key={item.title}
+                to={item.href}
+                className={
+                  index === 0
+                    ? "inline-flex h-9 items-center justify-center rounded-lg bg-slate-900 px-3 text-sm font-semibold text-white"
+                    : "inline-flex h-9 items-center justify-center rounded-lg border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700"
+                }
+              >
+                {item.title}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
@@ -348,18 +337,10 @@ export default function HomePage() {
       {!loading && !error && dashboard ? (
         <>
           {workspace ? (
-            <section className="rounded-[28px] border border-white/75 bg-[linear-gradient(135deg,rgba(236,253,245,0.94),rgba(255,255,255,0.94),rgba(239,246,255,0.92))] p-5 shadow-[0_20px_60px_rgba(31,41,55,0.08)] backdrop-blur">
+            <section className="rounded-2xl border border-white/75 bg-white/88 p-4 shadow-[0_14px_36px_rgba(31,41,55,0.07)] backdrop-blur">
               <div className="flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
                 <div className="max-w-2xl">
-                  <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-500">
-                    Quota Controls
-                  </p>
-                  <h2 className="mt-2 text-xl font-semibold text-slate-900">
-                    Real workspace quota and warning thresholds
-                  </h2>
-                  <p className="mt-2 text-sm leading-7 text-slate-600">
-                    Storage is now enforced from persisted workspace settings instead of a static constant. Warning notifications are generated when configured thresholds are crossed.
-                  </p>
+                  <h2 className="text-base font-semibold text-slate-900">Quota</h2>
                   <div className="mt-4 grid gap-3 sm:grid-cols-3">
                     <div className="rounded-2xl border border-white/90 bg-white/85 px-4 py-3">
                       <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-500">Used</p>
@@ -444,9 +425,8 @@ export default function HomePage() {
           </section>
 
           <section className="grid gap-4 xl:grid-cols-3">
-              <aside className="rounded-[28px] border border-white/75 bg-white/78 p-5 shadow-[0_20px_60px_rgba(31,41,55,0.08)] backdrop-blur">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-fuchsia-500">File type analytics</p>
-                <h2 className="mt-2 text-xl font-semibold text-slate-900">What fills the workspace most</h2>
+              <aside className="rounded-2xl border border-white/75 bg-white/84 p-4 shadow-[0_14px_36px_rgba(31,41,55,0.07)] backdrop-blur">
+                <h2 className="text-base font-semibold text-slate-900">File types</h2>
                 <div className="mt-4 grid gap-5">
                   <div className="rounded-[24px] border border-slate-100 bg-[linear-gradient(135deg,rgba(255,255,255,0.9),rgba(248,250,252,0.78),rgba(240,249,255,0.8))] p-4">
                     <div className="flex items-center gap-5">
@@ -523,9 +503,8 @@ export default function HomePage() {
                 </div>
               </aside>
 
-              <aside className="rounded-[28px] border border-white/75 bg-white/78 p-5 shadow-[0_20px_60px_rgba(31,41,55,0.08)] backdrop-blur">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-emerald-500">Upload trend insights</p>
-                <h2 className="mt-2 text-xl font-semibold text-slate-900">How uploads move over time</h2>
+              <aside className="rounded-2xl border border-white/75 bg-white/84 p-4 shadow-[0_14px_36px_rgba(31,41,55,0.07)] backdrop-blur">
+                <h2 className="text-base font-semibold text-slate-900">Uploads</h2>
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <div className="rounded-2xl border border-sky-100 bg-[linear-gradient(135deg,rgba(186,230,253,0.9),rgba(224,242,254,0.7),rgba(255,255,255,0.9))] px-3 py-3">
                     <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-500">Today</p>
@@ -586,9 +565,8 @@ export default function HomePage() {
                 </div>
               </aside>
 
-              <aside className="rounded-[28px] border border-white/75 bg-white/78 p-5 shadow-[0_20px_60px_rgba(31,41,55,0.08)] backdrop-blur">
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-amber-500">Storage consumption breakdown</p>
-                <h2 className="mt-2 text-xl font-semibold text-slate-900">Where space is going</h2>
+              <aside className="rounded-2xl border border-white/75 bg-white/84 p-4 shadow-[0_14px_36px_rgba(31,41,55,0.07)] backdrop-blur">
+                <h2 className="text-base font-semibold text-slate-900">Storage</h2>
 
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <div className="rounded-2xl border border-slate-100 bg-white/72 px-3 py-3">
@@ -657,12 +635,9 @@ export default function HomePage() {
               </aside>
           </section>
 
-          <section className="rounded-[28px] border border-white/75 bg-white/78 p-5 shadow-[0_20px_60px_rgba(31,41,55,0.08)] backdrop-blur">
+          <section className="rounded-2xl border border-white/75 bg-white/84 p-4 shadow-[0_14px_36px_rgba(31,41,55,0.07)] backdrop-blur">
             <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-sky-500">Recent files</p>
-                <h2 className="mt-2 text-xl font-semibold text-slate-900">Open a file quickly</h2>
-              </div>
+              <h2 className="text-base font-semibold text-slate-900">Recent files</h2>
               <Link to="/manager" className="text-sm font-medium text-sky-700 hover:text-slate-900">
                 Manager
               </Link>

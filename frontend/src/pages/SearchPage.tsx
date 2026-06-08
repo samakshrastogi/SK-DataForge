@@ -135,55 +135,34 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="grid gap-4">
-      <section className="rounded-[30px] border border-white/75 bg-[linear-gradient(135deg,rgba(239,246,255,0.95),rgba(255,255,255,0.94),rgba(245,243,255,0.92))] p-5 shadow-[0_20px_60px_rgba(31,41,55,0.08)] backdrop-blur sm:p-6">
-        <div className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
-          <div className="max-w-3xl">
-            <p className="text-sm font-semibold uppercase tracking-[0.24em] text-sky-500">
-              Workspace Search
-            </p>
-            <h1 className="mt-3 text-3xl font-semibold text-slate-900 sm:text-4xl">
-              Search folders, file metadata, and file content from one place.
-            </h1>
-            <p className="mt-3 text-sm leading-7 text-slate-600">
-              Match folder names, file names, extensions, categories, paths, and optionally text or table content.
-            </p>
-          </div>
-
-          <div className="rounded-[24px] border border-white/80 bg-white/80 px-4 py-3 shadow-[0_16px_40px_rgba(14,165,233,0.08)]">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
-              Results
-            </p>
-            <p className="mt-2 text-2xl font-semibold text-slate-900">{totals}</p>
-            <p className="mt-1 text-xs text-slate-500">
-              {results?.totals.folders || 0} folders and {results?.totals.files || 0} files
-            </p>
-          </div>
-        </div>
-
-        <form onSubmit={submitSearch} className="mt-6 grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto_auto] lg:items-center">
+    <div className="grid gap-3">
+      <section className="rounded-2xl border border-white/75 bg-white/88 p-3 shadow-[0_14px_36px_rgba(31,41,55,0.08)] backdrop-blur">
+        <form onSubmit={submitSearch} className="grid gap-2 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto] lg:items-center">
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search by folder, file, extension, category, or content"
-            className="rounded-[22px] border border-slate-200 bg-white/92 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-300 focus:ring-4 focus:ring-sky-100"
+            placeholder="Search folders, files, metadata, content"
+            className="h-10 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-900 outline-none transition focus:border-sky-300 focus:ring-4 focus:ring-sky-100"
           />
-          <label className="flex items-center gap-2 rounded-[18px] border border-slate-200 bg-white/90 px-4 py-3 text-sm text-slate-700">
+          <label className="flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700">
             <input
               type="checkbox"
               checked={includeContent}
               onChange={(event) => setIncludeContent(event.target.checked)}
               className="h-4 w-4 rounded border-slate-300 text-sky-500 focus:ring-sky-200"
             />
-            Include text and table content
+            Content
           </label>
           <button
             type="submit"
-            className="rounded-[18px] bg-[linear-gradient(135deg,#0ea5e9,#6366f1,#ec4899)] px-5 py-3 text-sm font-semibold text-white shadow-[0_14px_34px_rgba(99,102,241,0.24)] transition hover:-translate-y-0.5 hover:opacity-95"
+            className="h-10 rounded-xl bg-slate-900 px-4 text-sm font-semibold text-white transition hover:opacity-95"
           >
             Search
           </button>
+          <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-semibold text-slate-700">
+            {totals} results
+          </div>
         </form>
       </section>
 
@@ -201,16 +180,9 @@ export default function SearchPage() {
 
       {!loading && !error && results ? (
         <>
-          <section className="rounded-[28px] border border-white/75 bg-white/78 p-5 shadow-[0_20px_60px_rgba(31,41,55,0.08)] backdrop-blur">
+          <section className="rounded-2xl border border-white/75 bg-white/84 p-4 shadow-[0_14px_36px_rgba(31,41,55,0.07)] backdrop-blur">
             <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-violet-500">
-                  Folders
-                </p>
-                <h2 className="mt-2 text-xl font-semibold text-slate-900">
-                  Matching folders
-                </h2>
-              </div>
+              <h2 className="text-base font-semibold text-slate-900">Folders</h2>
               <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
                 {results.totals.folders}
               </span>
@@ -247,14 +219,9 @@ export default function SearchPage() {
             </div>
           </section>
 
-          <section className="rounded-[28px] border border-white/75 bg-white/78 p-5 shadow-[0_20px_60px_rgba(31,41,55,0.08)] backdrop-blur">
+          <section className="rounded-2xl border border-white/75 bg-white/84 p-4 shadow-[0_14px_36px_rgba(31,41,55,0.07)] backdrop-blur">
             <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-pink-500">
-                  Files
-                </p>
-                <h2 className="mt-2 text-xl font-semibold text-slate-900">Matching files</h2>
-              </div>
+              <h2 className="text-base font-semibold text-slate-900">Files</h2>
               <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600">
                 {results.totals.files}
               </span>

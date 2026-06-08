@@ -20,9 +20,9 @@ app.use(
 app.use(express.json());
 
 app.get("/", (_req, res) => {
-  res.json({ message: "SK DataForge API" });
+  res.json({ message: `${env.appName} API` });
 });
 
-app.use("/api", routes);
+app.use(env.apiBasePath, routes);
 
 export default app;

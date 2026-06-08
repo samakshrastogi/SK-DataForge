@@ -729,6 +729,16 @@ const isSupportedFile = (file: Express.Multer.File) => {
   return isSupportedFileType(extension, file.mimetype);
 };
 
+const getRequestAuthToken = (req: Request) => {
+  const header = req.header("authorization") || "";
+  const bearerMatch = header.match(/^Bearer\s+(.+)$/i);
+  if (bearerMatch) {
+    return bearerMatch[1];
+  }
+
+  return typeof req.query.token === "string" ? req.query.token : "";
+};
+
 export const getUploadFolders = async (_req: Request, res: Response) => {
   try {
     const folders = await FolderModel.find({}, { name: 1, _id: 0 }).sort({ name: 1 }).lean();
@@ -1053,7 +1063,10 @@ export const getUploadedFilePreview = async (req: Request, res: Response) => {
     const absolutePath = resolveAbsoluteFilePath(uploadedFile.path);
     const extension = uploadedFile.extension || path.extname(uploadedFile.name).toLowerCase();
     const category = uploadedFile.category || getFileCategory(extension, uploadedFile.type);
-    const contentUrl = `${env.appUrl}/api/uploads/files/${uploadedFile._id}/content`;
+    const token = getRequestAuthToken(req);
+    const contentUrl = `${env.appUrl}${env.apiBasePath}/uploads/files/${uploadedFile._id}/content${
+      token ? `?token=${encodeURIComponent(token)}` : ""
+    }`;
     const relatedFiles = await UploadedFileModel.find(
       { folderId: uploadedFile.folderId },
       {

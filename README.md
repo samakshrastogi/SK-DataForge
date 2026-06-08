@@ -1,457 +1,80 @@
 # SK DataForge
 
-SK DataForge is a full-stack workspace for uploading, organizing, searching, previewing, and automating file collections with a strong focus on table data. It combines a React frontend, an Express API, MongoDB-backed metadata, and filesystem storage for uploaded assets.
+Compact full-stack workspace for uploading, organizing, searching, previewing, and automating file collections.
 
-The project is designed for teams that need more than a basic file drop area. It supports dataset previews, lightweight data profiling, duplicate detection, workspace quota monitoring, notifications, folder-based file management, and scheduled ingestion and retention workflows.
+## Stack
 
-## Highlights
+- Frontend: React, TypeScript, Vite, Tailwind CSS
+- Backend: Node.js, Express, TypeScript, Mongoose
+- Storage: MongoDB metadata, local filesystem files
 
-- Upload and manage spreadsheets, CSVs, documents, images, media, archives, code, and text files.
-- Organize content in folders with rename, move, copy, delete, tagging, and bulk operations.
-- Search across folder names, file metadata, and file content for table and text-like files.
-- Preview files inline, including dataset/table previews with generated insights.
-- Detect duplicate content using SHA-256 content hashing.
-- Track workspace quota usage and generate notifications for important events.
-- Configure scheduled import sources and retention rules.
-- Export table previews back to CSV or XLSX.
+## Features
 
-## Core Product Capabilities
+- Folder-based uploads for tables, documents, images, media, archives, code, and text files
+- File manager with create, rename, move, copy, delete, bulk tag, bulk download, and export
+- Metadata and optional content search
+- Inline previews for tables, text/code, images, PDFs, audio, and video
+- Table insights for missing cells, duplicate rows, column types, fill rates, top values, ranges, and trends
+- Duplicate detection by SHA-256 content hash
+- Workspace quota, notifications, scheduled imports, and retention rules
+- Authentication, role-based access, and audit logging
 
-### 1. Workspace Dashboard
+## Setup
 
-The dashboard aggregates workspace-level operational data, including:
-
-- total folders and files
-- recent upload activity
-- file-type analytics
-- storage consumption and remaining capacity
-- upload trend summaries
-- recent files and largest files
-
-This makes the app usable as both a file workspace and a lightweight operational view over stored datasets.
-
-### 2. Upload and Ingestion
-
-Users can upload files into workspace folders from the frontend. On upload, the backend:
-
-- validates file support
-- sanitizes file and folder names
-- writes files to the local upload root
-- records metadata in MongoDB
-- computes content hashes for duplicate detection
-- enforces workspace quota limits
-- emits notifications for success, replacement, duplicates, and failures
-
-The automation layer also supports scheduled ingestion from:
-
-- direct URL sources
-- local folder sources
-
-Additional provider types such as Google Drive, OneDrive, SharePoint, S3, and Azure Blob are modeled in the schema and UI contract, but automated execution is currently implemented only for direct URL and local-folder sources.
-
-### 3. File Manager
-
-The file manager provides folder-tree navigation and workspace operations such as:
-
-- create, rename, move, copy, and delete folders
-- rename, move, copy, and delete files
-- bulk move, delete, tag, download, and export
-- duplicate-file grouping
-- breadcrumb navigation and folder tree browsing
-
-### 4. Search
-
-Global search supports:
-
-- folder name matching
-- file name and metadata matching
-- optional content-aware search for table and text-like files
-- result snippets for matched content
-
-For table files, searchable content is derived from spreadsheet headers and rows. For text-like files, raw file text is indexed at request time.
-
-### 5. File Preview and Table Intelligence
-
-The preview flow is one of the stronger parts of the project.
-
-Supported preview modes include:
-
-- tables
-- plain text / code-like files
-- images
-- PDFs
-- audio and video
-- documents with download/open fallback
-- archives with metadata-only fallback
-
-For spreadsheets and tabular files, the backend generates structured insights such as:
-
-- row and column counts
-- populated versus missing cells
-- duplicate row detection
-- inferred column types
-- fill-rate analysis
-- top values
-- numeric ranges and averages
-- date ranges
-- boolean breakdowns
-- lightweight trend blocks
-
-This gives the app a data-profiling layer, not just a file preview layer.
-
-### 6. Automation and Retention
-
-The backend includes a scheduler that runs on a fixed interval and executes:
-
-- import jobs for active ingestion sources
-- retention rules for archive or delete actions
-
-Retention rules can target:
-
-- a specific folder subtree
-- files older than a configured number of days
-- optional tag-based filters
-
-Archived files are moved under an `_archive` path, while delete actions remove both the file on disk and its metadata record.
-
-### 7. Notifications and Quota Awareness
-
-The system stores workspace notifications for events such as:
-
-- upload failures
-- completed processing
-- duplicate detection
-- new file version uploads
-- scheduled ingestion failures or completions
-- quota-related warnings
-
-Workspace settings are persisted in MongoDB and include quota size, warning thresholds, admin label, and workspace name.
-
-## Tech Stack
-
-### Frontend
-
-- React 18
-- TypeScript
-- Vite
-- React Router
-- Tailwind CSS
-
-### Backend
-
-- Node.js
-- Express
-- TypeScript
-- Mongoose
-- Multer
-- XLSX
-- Archiver
-
-### Storage
-
-- MongoDB for metadata, automation rules, notifications, and workspace settings
-- Local filesystem for uploaded file content
-
-## Repository Structure
-
-```text
-.
-|-- backend/
-|   |-- src/
-|   |   |-- config/
-|   |   |-- constants/
-|   |   |-- controllers/
-|   |   |-- models/
-|   |   |-- routes/
-|   |   |-- services/
-|   |   `-- utils/
-|   |-- package.json
-|   `-- tsconfig.json
-|-- frontend/
-|   |-- src/
-|   |   |-- components/
-|   |   |-- lib/
-|   |   `-- pages/
-|   |-- package.json
-|   `-- vite.config.ts
-|-- package.json
-`-- README.md
+```bash
+npm install --prefix backend
+npm install --prefix frontend
 ```
 
-## Project Flowcharts
+Create `backend/.env` from `backend/.env.example` and `frontend/.env` from `frontend/.env.example`.
 
-### Product Flows
+Required backend values:
 
-### User Journey Flow
-
-```mermaid
-flowchart LR
-    A["User opens workspace"] --> B["View dashboard"]
-    B --> C["Upload files"]
-    C --> D["Organize files and folders"]
-    D --> E["Preview file content"]
-    E --> F["Inspect table insights"]
-    F --> G["Search metadata or content"]
-    G --> H["Run or configure automations"]
-    H --> I["Review notifications and quota usage"]
+```env
+APP_NAME=SK DataForge
+APP_URL=http://localhost:5000
+API_BASE_PATH=/api
+CORS_ORIGIN=http://localhost:5173
+MONGODB_URI=mongodb://127.0.0.1:27017
+MONGODB_DB_NAME=sk-dataforge
+UPLOAD_ROOT=uploads
+AUTH_TOKEN_SECRET=replace-with-a-long-random-secret
+ADMIN_EMAIL=admin@sk-dataforge.local
+ADMIN_PASSWORD=ChangeMe123!
 ```
 
-### Dashboard and Workspace Flow
+Run locally:
 
-```mermaid
-flowchart LR
-    A["Open dashboard"] --> B["Request workspace summary"]
-    B --> C["Folder and file counts"]
-    B --> D["Storage usage and quota status"]
-    B --> E["Recent files and uploads"]
-    B --> F["Analytics and trends"]
-    C --> G["Workspace overview"]
-    D --> G
-    E --> G
-    F --> G
+```bash
+npm run dev:backend
+npm run dev:frontend
 ```
 
-### Upload Processing Flow
+Build:
 
-```mermaid
-flowchart TD
-    A["User selects files"] --> B["POST /api/uploads"]
-    B --> C["Validate supported file types"]
-    C --> D["Sanitize folder and file names"]
-    D --> E["Check workspace quota"]
-    E --> F["Create or locate folder record"]
-    F --> G["Write file to local storage"]
-    G --> H["Compute SHA-256 content hash"]
-    H --> I["Create or update UploadedFile metadata"]
-    I --> J["Detect duplicates or replacement versions"]
-    J --> K["Create notifications"]
-    K --> L["Return upload response to UI"]
+```bash
+npm run build:backend
+npm run build:frontend
 ```
 
-### File Preview and Intelligence Flow
+## Default Access
 
-```mermaid
-flowchart TD
-    A["User opens file preview"] --> B["GET /api/uploads/files/:fileId/preview"]
-    B --> C["Load file metadata"]
-    C --> D["Resolve absolute file path"]
-    D --> E["Detect category and extension"]
-    E --> F{"Preview type?"}
-    F -->|Table| G["Parse worksheet rows and columns"]
-    F -->|Text / Code| H["Read text content"]
-    F -->|Image / PDF / Media| I["Build media preview payload"]
-    F -->|Archive / Unsupported| J["Build fallback preview message"]
-    G --> K["Generate dataset insights"]
-    H --> L["Build text preview"]
-    I --> M["Return content URL"]
-    J --> N["Return fallback response"]
-    K --> O["Return preview JSON to frontend"]
-    L --> O
-    M --> O
-    N --> O
-```
+If the database has no users, the backend creates one admin user from `ADMIN_EMAIL` and `ADMIN_PASSWORD`.
 
-### Search Flow
+## API Areas
 
-```mermaid
-flowchart TD
-    A["User enters search query"] --> B["GET /api/search"]
-    B --> C["Load folders and files from MongoDB"]
-    C --> D["Match folder names and file metadata"]
-    D --> E{"Include content search?"}
-    E -->|Yes| F["Extract searchable content from table and text files"]
-    E -->|No| G["Skip content extraction"]
-    F --> H["Build content snippets"]
-    G --> I["Assemble metadata matches"]
-    H --> J["Combine folder and file results"]
-    I --> J
-    J --> K["Return grouped search response"]
-```
+- `/api/auth`
+- `/api/dashboard`
+- `/api/workspace`
+- `/api/uploads`
+- `/api/manager`
+- `/api/search`
+- `/api/automation`
+- `/api/notifications`
+- `/api/audit`
 
-### Automation Outcome Flow
+## Notes
 
-```mermaid
-flowchart LR
-    A["User creates import source or retention rule"] --> B["Automation saved in workspace"]
-    B --> C["Scheduler checks due work"]
-    C --> D["Import new files"]
-    C --> E["Archive or delete old files"]
-    D --> F["Metadata and storage updated"]
-    E --> F
-    F --> G["Notifications and refreshed workspace state"]
-```
-
-### Engineering Flows
-
-### Architecture Overview
-
-```mermaid
-flowchart LR
-    U["User"] --> F["Frontend (React + Vite)"]
-    F --> R["API Routes (/api)"]
-    R --> C1["Dashboard Controller"]
-    R --> C2["Upload Controller"]
-    R --> C3["File Manager Controller"]
-    R --> C4["Search Controller Logic"]
-    R --> C5["Automation Controller"]
-    R --> C6["Workspace + Notification Controllers"]
-
-    C1 --> DB["MongoDB"]
-    C2 --> DB
-    C2 --> FS["Local File Storage"]
-    C2 --> INT["File Intelligence / Table Insights"]
-    C3 --> DB
-    C3 --> FS
-    C4 --> DB
-    C4 --> FS
-    C4 --> INT
-    C5 --> DB
-    C5 --> FS
-    C5 --> SCH["In-process Scheduler"]
-    C6 --> DB
-
-    SCH --> IMP["Import Jobs"]
-    SCH --> RET["Retention Rules"]
-    IMP --> FS
-    IMP --> DB
-    RET --> FS
-    RET --> DB
-
-    DB --> N["Workspace State, Metadata, Notifications, Rules"]
-    FS --> P["Stored Files and Archived Content"]
-    INT --> V["Preview Generation and Dataset Profiling"]
-```
-
-### Detailed Scheduler and Automation Flow
-
-```mermaid
-flowchart TD
-    A["Server starts"] --> B["Start in-process scheduler"]
-    B --> C["Scheduler tick"]
-    C --> D["Load active import sources"]
-    C --> E["Load active retention rules"]
-    D --> F{"Source due?"}
-    F -->|Yes| G["Run import job"]
-    F -->|No| H["Wait for next tick"]
-    G --> I["Fetch URL or scan local folder"]
-    I --> J["Save imported files"]
-    J --> K["Update import source status"]
-    K --> L["Create completion or failure notification"]
-    E --> M{"Rule due?"}
-    M -->|Yes| N["Run retention rule"]
-    M -->|No| H
-    N --> O["Find matching active files"]
-    O --> P{"Action"}
-    P -->|Archive| Q["Move file to _archive path"]
-    P -->|Delete| R["Delete file and metadata"]
-    Q --> S["Update rule status"]
-    R --> S
-    S --> T["Next scheduler cycle"]
-    L --> T
-```
-
-### Data Model Relationship Diagram
-
-```mermaid
-flowchart LR
-    WS["WorkspaceSettings"] --> N["Notification"]
-    WS --> IR["ImportSource"]
-    WS --> RR["RetentionRule"]
-    F["Folder"] --> SF["Child Folder"]
-    F --> UF["UploadedFile"]
-    IR --> F
-    RR --> F
-    RR --> UF
-    UF --> N
-    IR --> N
-```
-
-### Storage Lifecycle Flow
-
-```mermaid
-flowchart LR
-    A["File uploaded"] --> B["Stored as active file"]
-    B --> C["Metadata indexed in MongoDB"]
-    C --> D["May be flagged as duplicate"]
-    D --> E["Available for search and preview"]
-    E --> F{"Retention rule triggered?"}
-    F -->|Archive| G["Moved to _archive path"]
-    F -->|Delete| H["Removed from storage and metadata"]
-    F -->|No| I["Remains active"]
-```
-
-### API Module Flow
-
-```mermaid
-flowchart LR
-    A["Routes"] --> B["Controllers"]
-    B --> C["Services"]
-    B --> D["Utilities"]
-    B --> E["Models"]
-    C --> E
-    D --> E
-    E --> F["MongoDB"]
-    D --> G["Filesystem"]
-    D --> H["Table parsing and file intelligence"]
-```
-
-## Data Model Summary
-
-Key MongoDB models in the current implementation:
-
-- `Folder`
-- `UploadedFile`
-- `WorkspaceSettings`
-- `Notification`
-- `ImportSource`
-- `RetentionRule`
-
-Important implementation details:
-
-- files are uniquely constrained by `folderId + name`
-- folders are uniquely constrained by `parentId + name`
-- duplicate detection uses a SHA-256 `contentHash`
-- file lifecycle supports `active` and `archived`
-
-## What Makes This Project Valuable
-
-This repository is stronger than a standard upload manager because it combines:
-
-- file storage
-- metadata management
-- workspace operations
-- content-aware search
-- table intelligence
-- quota monitoring
-- automation
-
-That combination makes it suitable for internal data operations, document workspaces, reporting repositories, and lightweight dataset governance use cases.
-
-## Current Gaps and Practical Limitations
-
-The codebase is functional, but the current version still has some product and engineering gaps:
-
-- there is no authentication or authorization layer yet
-- the upload content is stored on the local filesystem rather than object storage
-- some provider types are modeled but not fully implemented for automated ingestion
-- search is request-time and file-based, not backed by a dedicated indexing engine
-- there is no test suite configured in the repository at the moment
-- deployment and containerization assets are not included yet
-
-These are worth addressing if the project is intended for production or multi-tenant usage.
-
-## Recommended Next Improvements
-
-- add authentication and role-based access control
-- move file storage to S3, Azure Blob, or another managed object store
-- add background job infrastructure instead of relying on in-process intervals
-- introduce automated tests for upload, search, preview, and retention flows
-- add Docker support and deployment documentation
-- add richer connector implementations for cloud storage providers
-- add persistent search indexing for larger datasets
-
-## Status
-
-The current repository represents a solid MVP for a smart file workspace centered on data-heavy files. It already demonstrates a good separation between frontend, API, persistence, and filesystem concerns, and it includes several useful product-level behaviors beyond CRUD.
-
-If this project is being showcased on GitHub, this README should position it clearly as a data workspace and file intelligence platform rather than only a file uploader.
+- URL and local-folder imports are executable today.
+- Cloud connector types are modeled but not fully implemented.
+- Files are stored locally unless a future storage adapter is added.

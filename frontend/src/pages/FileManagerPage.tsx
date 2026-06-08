@@ -742,14 +742,11 @@ export default function FileManagerPage() {
                       : "";
 
   return (
-    <section className="grid gap-4 xl:grid-cols-[250px_minmax(0,1fr)]">
-      <aside className="rounded-[28px] border border-white/75 bg-white/78 p-4 shadow-[0_20px_60px_rgba(99,102,241,0.10)] backdrop-blur">
+    <section className="grid gap-3 xl:grid-cols-[240px_minmax(0,1fr)]">
+      <aside className="rounded-2xl border border-white/75 bg-white/84 p-3 shadow-[0_14px_36px_rgba(99,102,241,0.08)] backdrop-blur">
         <div className="flex items-center justify-between gap-2">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500">
-              File Manager
-            </p>
-            <p className="mt-0.5 text-xs text-slate-500">Browse folders</p>
+            <p className="text-sm font-semibold text-slate-900">Folders</p>
           </div>
           <button
             type="button"
@@ -776,7 +773,7 @@ export default function FileManagerPage() {
         </div>
       </aside>
 
-      <div className="rounded-[28px] border border-white/75 bg-white/78 p-4 shadow-[0_20px_60px_rgba(99,102,241,0.10)] backdrop-blur sm:p-5">
+      <div className="rounded-2xl border border-white/75 bg-white/84 p-3 shadow-[0_14px_36px_rgba(99,102,241,0.08)] backdrop-blur sm:p-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <h1 className="text-lg font-semibold text-slate-900">
@@ -822,13 +819,10 @@ export default function FileManagerPage() {
         {!loading && !error && data ? (
           <div className="mt-4">
             {selectedCount ? (
-              <section className="mb-5 rounded-[24px] border border-sky-100 bg-[linear-gradient(135deg,rgba(224,242,254,0.9),rgba(255,255,255,0.94),rgba(238,242,255,0.88))] p-4 shadow-[0_12px_30px_rgba(14,165,233,0.08)]">
+              <section className="mb-4 rounded-2xl border border-sky-100 bg-white/90 p-3 shadow-[0_10px_24px_rgba(14,165,233,0.06)]">
                 <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sky-600">
-                      Bulk Actions
-                    </p>
-                    <p className="mt-1 text-sm text-slate-700">
+                    <p className="text-sm font-semibold text-slate-900">
                       {selectedCount} item{selectedCount === 1 ? "" : "s"} selected
                     </p>
                   </div>
@@ -919,18 +913,10 @@ export default function FileManagerPage() {
             ) : null}
 
             {isRootView ? (
-              <section className="mb-5 rounded-[24px] border border-amber-100 bg-[linear-gradient(135deg,rgba(255,251,235,0.96),rgba(255,255,255,0.94),rgba(254,249,195,0.82))] p-4 shadow-[0_16px_34px_rgba(245,158,11,0.08)]">
+              <section className="mb-4 rounded-2xl border border-amber-100 bg-white/90 p-3 shadow-[0_10px_24px_rgba(245,158,11,0.06)]">
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                   <div>
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-amber-600">
-                      Duplicate Detection
-                    </p>
-                    <h2 className="mt-2 text-lg font-semibold text-slate-900">
-                      Same-content files across the workspace
-                    </h2>
-                    <p className="mt-1 text-sm leading-6 text-slate-600">
-                      Files are grouped by content hash, so duplicates are detected by actual file contents, not by file name.
-                    </p>
+                    <h2 className="text-base font-semibold text-slate-900">Duplicates</h2>
                   </div>
                   <div className="grid gap-2 sm:grid-cols-3">
                     <div className="rounded-2xl border border-white/90 bg-white/88 px-4 py-3">
@@ -1015,19 +1001,11 @@ export default function FileManagerPage() {
             ) : null}
 
             {isRootView && automationData ? (
-              <section className="mb-5 grid gap-4 2xl:grid-cols-2">
-                <article className="rounded-[24px] border border-emerald-100 bg-[linear-gradient(135deg,rgba(236,253,245,0.96),rgba(255,255,255,0.94),rgba(239,246,255,0.9))] p-4 shadow-[0_16px_34px_rgba(16,185,129,0.08)]">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-600">
-                    Ingestion Center
-                  </p>
-                  <h2 className="mt-2 text-lg font-semibold text-slate-900">
-                    Import from URL, scheduled folder sync, and connector-ready sources
-                  </h2>
-                  <p className="mt-1 text-sm leading-6 text-slate-600">
-                    URL and local-folder sync are active now. Cloud provider types are stored as first-class sources so connector execution can be expanded without changing the UI contract.
-                  </p>
+              <section className="mb-4 grid gap-3 2xl:grid-cols-2">
+                <article className="rounded-2xl border border-emerald-100 bg-white/90 p-3 shadow-[0_10px_24px_rgba(16,185,129,0.06)]">
+                  <h2 className="text-base font-semibold text-slate-900">Imports</h2>
 
-                  <div className="mt-4 grid gap-2 md:grid-cols-2">
+                  <div className="mt-3 grid gap-2 md:grid-cols-2">
                     <input
                       type="text"
                       value={sourceForm.name}
@@ -1096,7 +1074,7 @@ export default function FileManagerPage() {
                     </button>
                   </div>
 
-                  <div className="mt-4 grid gap-3">
+                  <div className="mt-3 grid gap-2">
                     {automationData.sources.map((source) => (
                       <div key={source.id} className="rounded-2xl border border-white/90 bg-white/88 px-4 py-3">
                         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -1122,18 +1100,10 @@ export default function FileManagerPage() {
                   </div>
                 </article>
 
-                <article className="rounded-[24px] border border-fuchsia-100 bg-[linear-gradient(135deg,rgba(253,242,248,0.96),rgba(255,255,255,0.94),rgba(239,246,255,0.9))] p-4 shadow-[0_16px_34px_rgba(236,72,153,0.08)]">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-fuchsia-600">
-                    Retention And Archiving
-                  </p>
-                  <h2 className="mt-2 text-lg font-semibold text-slate-900">
-                    Lifecycle rules for ongoing storage hygiene
-                  </h2>
-                  <p className="mt-1 text-sm leading-6 text-slate-600">
-                    Example policies: archive files older than 120 days or delete temporary uploads after 60 days.
-                  </p>
+                <article className="rounded-2xl border border-fuchsia-100 bg-white/90 p-3 shadow-[0_10px_24px_rgba(236,72,153,0.06)]">
+                  <h2 className="text-base font-semibold text-slate-900">Retention</h2>
 
-                  <div className="mt-4 grid gap-2 md:grid-cols-2">
+                  <div className="mt-3 grid gap-2 md:grid-cols-2">
                     <input
                       type="text"
                       value={ruleForm.name}
@@ -1354,11 +1324,10 @@ export default function FileManagerPage() {
 
       {dialog.kind !== "closed" ? (
         <div className="fixed inset-0 z-40 flex items-center justify-center bg-slate-950/30 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-[28px] border border-white/80 bg-white/92 p-5 shadow-[0_24px_80px_rgba(15,23,42,0.18)]">
+          <div className="w-full max-w-md rounded-2xl border border-white/80 bg-white/95 p-4 shadow-[0_18px_56px_rgba(15,23,42,0.16)]">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sky-500">File Manager</p>
-                <h2 className="mt-2 text-lg font-semibold text-slate-900">{dialogTitle}</h2>
+                <h2 className="text-base font-semibold text-slate-900">{dialogTitle}</h2>
               </div>
               <button
                 type="button"
@@ -1408,7 +1377,7 @@ export default function FileManagerPage() {
             ) : null}
 
             {dialog.kind === "delete-folder" || dialog.kind === "delete-file" ? (
-              <p className="mt-4 text-sm leading-7 text-slate-600">
+              <p className="mt-4 text-sm text-slate-600">
                 {dialog.kind === "delete-folder"
                   ? `Delete "${dialog.name}" and everything inside it?`
                   : `Delete "${dialog.name}"?`}
